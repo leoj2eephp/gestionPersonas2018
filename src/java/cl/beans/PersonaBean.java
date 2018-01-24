@@ -59,7 +59,7 @@ public class PersonaBean implements PersonaBeanLocal {
             listaPersonas.add(persona);
             return "Persona creada exitosamente!";
         } else {
-            return "Rut ingresado ya se encuentra registrado..";
+            return "Rut ingresado ya se encuentra registrado..\n";
         }
     }
     

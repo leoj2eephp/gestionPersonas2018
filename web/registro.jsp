@@ -30,11 +30,8 @@
                 <label for="clave2">Confirmar Clave</label>
             </div>
 
-            
-            
-
-
             <button class="btn right" name="boton" value="registro">Registrar</button>
+            <div class="row">${requestScope.msg}</div>
             <br><br><br>
             <p class="center-align">
                 <a href="index.jsp">Volver</a>
