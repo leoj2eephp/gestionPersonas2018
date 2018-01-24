@@ -1,3 +1,6 @@
+<%@page import="cl.beans.PersonaBean"%>
+<%@page import="javax.naming.InitialContext"%>
+<%@page import="cl.beans.PersonaBeanLocal"%>
 <%@include file="template/header.jsp" %>
 
 
@@ -20,7 +23,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <c:forEach items="${applicationScope.data}" var="p">
+                        <%! private PersonaBeanLocal beanPersona;%>
+                        <%
+                            InitialContext ctx = new InitialContext();
+                            beanPersona = (PersonaBeanLocal) ctx.lookup("java:global/EjercicioMartes/PersonaBean!cl.beans.PersonaBeanLocal");
+                        %>
+                        <c:set var="lista" scope="page" value="<%= beanPersona.getPersonaList() %>" />
+                        <c:forEach items="${pageScope.lista}" var="p">
                             <tr>
                                 <td>${p.rut}</td>
                                 <td>${p.nombre}</td>

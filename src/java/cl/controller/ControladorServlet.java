@@ -1,15 +1,11 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package cl.controller;
 
-import cl.model.IUtilidad;
+import cl.beans.PersonaBeanLocal;
 import cl.model.Persona;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
+import javax.ejb.EJB;
 import javax.inject.Inject;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -17,15 +13,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-/**
- *
- * @author roman
- */
 @WebServlet(name = "ControladorServlet", urlPatterns = {"/control.do"})
 public class ControladorServlet extends HttpServlet {
 
-    @Inject
-    private IUtilidad utilidad;
+    @EJB
+    private PersonaBeanLocal beanPersona;
 
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
@@ -51,27 +43,17 @@ public class ControladorServlet extends HttpServlet {
             throws ServletException, IOException {
         String rut = request.getParameter("rut");
         String activo = request.getParameter("activo");
+        boolean active = Boolean.valueOf(activo);
         
-        List<Persona> list = (List<Persona>) 
-                            getServletContext().getAttribute("data");
-        
-        Persona p = utilidad.buscar(rut, list);
-        p.setActivo(activo.equalsIgnoreCase("Si"));
-        getServletContext().setAttribute("data", list);
+        beanPersona.editar(new Persona(rut, "", "", "", "", active));
         response.sendRedirect("personas.jsp");
-        
     }
     
     
 
-    protected void procesaRut(HttpServletRequest request, 
-            HttpServletResponse response,
-            String boton)
+    protected void procesaRut(HttpServletRequest request, HttpServletResponse response, String boton)
             throws ServletException, IOException {
-        List<Persona> list = (List<Persona>)
-                getServletContext().getAttribute("data");
-        
-        Persona p = utilidad.buscar(boton, list);
+        Persona p = beanPersona.buscar(boton);
         request.setAttribute("persona", p);
         request.getRequestDispatcher("editarPersona.jsp").forward(request, response);
         
@@ -79,14 +61,10 @@ public class ControladorServlet extends HttpServlet {
 
     protected void login(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
         String rut = request.getParameter("rut");
         String clave = request.getParameter("clave");
-
-        List<Persona> list = (List<Persona>) getServletContext().getAttribute("data");
-
-        Persona p = utilidad.loguear(rut, clave, list);
-
+        
+        Persona p = beanPersona.loguear(rut, clave);
         if (p == null) {
             request.setAttribute("msg", "Hubo un error al iniciar sesion :(");
             request.getRequestDispatcher("index.jsp").forward(request, response);
@@ -101,7 +79,7 @@ public class ControladorServlet extends HttpServlet {
 
     protected void registro(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

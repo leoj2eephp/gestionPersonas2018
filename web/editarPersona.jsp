@@ -8,17 +8,17 @@
         <div class="col s6 offset-s3 z-depth-3">
             <h4 class="center-align">Editar Persona</h4>
             <form action="control.do" method="post">
-                <input type="text" readonly="true" name="rut"
+                <input type="text" readonly="readonly" name="rut"
                        value="${requestScope.persona.rut}"/>
-                <input type="text" readonly="true" name="nombre"
+                <input type="text" readonly="readonly" name="nombre"
                        value="${requestScope.persona.nombre}"/>
-                <input type="text" readonly="true" name="mail" 
+                <input type="text" readonly="readonly" name="mail" 
                        value="${requestScope.persona.mail}"/>
-                <input type="text" readonly="true" name="perfil"
+                <input type="text" readonly="readonly" name="perfil"
                        value="${requestScope.persona.perfil}"/>
                 <select name="activo">
-                    <option ${requestScope.persona.activo?"selected":""}>Si</option>
-                    <option ${requestScope.persona.activo?"":"selected"}>No</option>
+                    <option value="true" ${requestScope.persona.activo?"selected":""}>Si</option>
+                    <option value="false" ${requestScope.persona.activo?"":"selected"}>No</option>
                 </select>
                 <button class="btn" name="boton" value="editar">
                     Editar
